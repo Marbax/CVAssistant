@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ViewModels;
 
 namespace CVAssistant
 {
@@ -20,9 +21,21 @@ namespace CVAssistant
     /// </summary>
     public partial class MainWindow : Window
     {
+        ViewModels.MainViewModel mv = new ViewModels.MainViewModel();
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = mv;
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            mv.CreateTestPDF(DocViewer.Document);
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            DocViewer.Document = mv.OpenPDF();
         }
     }
 }

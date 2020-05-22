@@ -7,6 +7,25 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <FlowDocumentReader x:Name="DocViewer">
+            <FlowDocument>
+                <FlowDocument.Resources>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="FontSize" Value="14"/>
+                        <Setter Property="Margin" Value="5"/>
+                    </Style>
+                </FlowDocument.Resources>
+            </FlowDocument>
+        </FlowDocumentReader>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal">
+            <Button Click="Button_Click" Margin="3">Gen</Button>
+            <Button Click="Button_Click_1" Margin="3">Show</Button>
+        </StackPanel>
     </Grid>
 </Window>
