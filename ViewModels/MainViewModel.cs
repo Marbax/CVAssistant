@@ -7,10 +7,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Documents;
 using PDFAssistant;
+using Prism.Mvvm;
 
 namespace ViewModels
 {
-    public class MainViewModel
+    public class MainViewModel : BindableBase
     {
         PDFAssistant.PDFAssistant _PDFAssistant = new PDFAssistant.PDFAssistant();
 
