@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Models;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Packaging;
@@ -9,6 +10,7 @@ using System.Windows.Xps;
 using System.Windows.Xps.Packaging;
 using System.Windows.Xps.Serialization;
 using dotTemplate = DotLiquid.Template;
+
 
 namespace PDFAssistant
 {
@@ -37,7 +39,7 @@ namespace PDFAssistant
             }
         }
 
-        public FlowDocument Parse(string templatePath)
+        public FlowDocument Parse(string templatePath, CurriculumVitae curriculumVitae)
         {
             using (var stream = new FileStream(templatePath, FileMode.Open))
             {
@@ -45,7 +47,8 @@ namespace PDFAssistant
                 {
                     var templateString = reader.ReadToEnd();
                     var template = dotTemplate.Parse(templateString);
-                    var docContext = CreateDocumentContext();
+                    //var docContext = CreateDocumentContext();
+                    var docContext = DotLiquid.Hash.FromAnonymousObject(new { Model = curriculumVitae });
                     var docString = template.Render(docContext);
                     return (FlowDocument)System.Windows.Markup.XamlReader.Parse(docString);
                 }
@@ -54,6 +57,7 @@ namespace PDFAssistant
 
         private DotLiquid.Hash CreateDocumentContext()
         {
+
             var context = new
             {
                 Title = "Hello, Habrahabr!",

@@ -1,8 +1,9 @@
-﻿using System;
+﻿using DotLiquid;
+using System;
 
 namespace Models
 {
-    public class Person
+    public class Person : ILiquidizable
     {
         private string _name;
 
@@ -101,5 +102,9 @@ namespace Models
             Photo = photo;
         }
 
+        public object ToLiquid()
+        {
+            return new { Name, Surname, LastName, BirthDay = BirthDay.ToShortDateString(), YearsOld, Phone, City, Country, Email, Photo };
+        }
     }
 }

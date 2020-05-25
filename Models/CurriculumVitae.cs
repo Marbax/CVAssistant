@@ -1,33 +1,50 @@
-﻿using System.Collections.Generic;
+﻿using DotLiquid;
+using System.Collections.Generic;
 
 namespace Models
 {
-	public class CurriculumVitae
+    public class CurriculumVitae : ILiquidizable
     {
-		private Person _person;
+        private Person _person;
 
-		public Person Person
-		{
-			get { return _person; }
-			set { _person = value; }
-		}
+        public Person Person
+        {
+            get { return _person; }
+            set { _person = value; }
+        }
 
-		private List<string> _skills;
+        private List<string> _skills;
 
-		public List<string> Skills
-		{
-			get { return _skills; }
-			set { _skills = value; }
-		}
+        public List<string> Skills
+        {
+            get { return _skills; }
+            set { _skills = value; }
+        }
 
-		private List<string> _prevExp;
-
-		public List<string> PreviousExperience
-		{
-			get { return _prevExp; }
-			set { _prevExp = value; }
-		}
+        private List<Experience> _prevExp;
 
 
-	}
+        public List<Experience> PreviousExperience
+        {
+            get { return _prevExp; }
+            set { _prevExp = value; }
+        }
+
+        public CurriculumVitae(Person person, List<string> skills, List<Experience> previousExperience)
+        {
+            Person = person;
+            Skills = skills;
+            PreviousExperience = previousExperience;
+        }
+
+        public object ToLiquid()
+        {
+            return new
+            {
+                Person,
+                Skills,
+                PreviousExperience
+            };
+        }
+    }
 }

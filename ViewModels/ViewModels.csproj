@@ -52,6 +52,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Models\Models.csproj">
+      <Project>{6D864CA1-B319-47BD-B9D5-3A09A5E9BA25}</Project>
+      <Name>Models</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PDFAssistant\PDFAssistant.csproj">
       <Project>{dc4995fe-1f2e-46e2-935f-2377a983ffc8}</Project>
       <Name>PDFAssistant</Name>
