@@ -3,16 +3,51 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:CVAssistant"
+        xmlns:Views="clr-namespace:CVAssistant"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Background="#FFF8F1E9"
+        Title="MainWindow" 
+        Height="450" 
+        Width="800"
+        WindowStartupLocation="CenterScreen"
+        >
+
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
 
-        <FlowDocumentReader x:Name="DocViewer">
+        <Menu Grid.Row="0" Grid.Column="0">
+            <MenuItem Header="Test">
+                <MenuItem Header="Test">
+
+                </MenuItem>
+            </MenuItem>
+            <MenuItem Header="Test">
+
+            </MenuItem>
+        </Menu>
+
+        <Views:ConstructorUserControl Grid.Column="0" Grid.Row="1" Grid.RowSpan="2">
+
+        </Views:ConstructorUserControl>
+
+        <GridSplitter Grid.Column="1" 
+                      Grid.Row="0" 
+                      Grid.RowSpan="3" 
+                      Width="5" 
+                      HorizontalAlignment="Center" 
+                      VerticalAlignment="Stretch">
+        </GridSplitter>
+
+        <FlowDocumentReader x:Name="DocViewer" Grid.Row="1" Grid.Column="2">
             <FlowDocument>
                 <FlowDocument.Resources>
                     <Style TargetType="TextBlock">
@@ -23,9 +58,10 @@
             </FlowDocument>
         </FlowDocumentReader>
 
-        <StackPanel Grid.Row="1" Orientation="Horizontal">
+        <StackPanel Grid.Row="2" Grid.Column="2" Orientation="Horizontal">
             <Button Click="Button_Click" Margin="3">Gen</Button>
             <Button Click="Button_Click_1" Margin="3">Show</Button>
         </StackPanel>
+
     </Grid>
 </Window>

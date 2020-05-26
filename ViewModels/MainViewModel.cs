@@ -1,20 +1,40 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Documents;
+﻿using Commands;
+using Microsoft.Win32;
 using Models;
-using PDFAssistant;
-using Prism.Mvvm;
+using System;
+using System.Collections.Generic;
+using System.Windows.Documents;
+using System.Windows.Input;
 
 namespace ViewModels
 {
-    public class MainViewModel //: BindableBase
+    public class MainViewModel : AViewModel
     {
-        PDFAssistant.PDFAssistant _PDFAssistant = new PDFAssistant.PDFAssistant();
+        private readonly RelayCommand _selectPhotoCommand;
+        public ICommand SelectPhoto => _selectPhotoCommand;
+
+
+        private CurriculumVitae _currentCV;
+        public CurriculumVitae CurrentCV
+        {
+            get { return _currentCV; }
+            set { SetProperty(ref _currentCV, value); }
+        }
+
+        private string _selectedSkill;
+        public string SelectedSkill
+        {
+            get { return _selectedSkill; }
+            set { SetProperty(ref _selectedSkill, value); }
+        }
+
+        readonly PDFAssistant.PDFAssistant _PDFAssistant = new PDFAssistant.PDFAssistant();
+
+        public MainViewModel()
+        {
+            CurrentCV = GetDefaultCV();
+            _selectPhotoCommand = new RelayCommand(OpenAndLoadPhoto);
+        }
 
         public void CreateTestPDF(FlowDocument flowDocument, string saveToPath = "doc.pdf")
         {
@@ -23,7 +43,7 @@ namespace ViewModels
 
         public FlowDocument OpenPDF()
         {
-            return _PDFAssistant.Parse(@"Templates\DefaultCV.lqd", GetDefaultCV());
+            return _PDFAssistant.Parse(@"Templates\DefaultCV.lqd", CurrentCV);
         }
 
         private CurriculumVitae GetDefaultCV()
@@ -48,5 +68,15 @@ namespace ViewModels
 
             return curriculumVitae;
         }
+
+        private void OpenAndLoadPhoto(object args = null)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            if (openFileDialog.ShowDialog() == true)
+            {
+                _currentCV.Person.Photo = openFileDialog.FileName;
+            }
+        }
     }
+
 }

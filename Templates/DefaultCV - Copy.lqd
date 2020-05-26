@@ -58,52 +58,63 @@
 
     </Grid>
   </BlockUIContainer>
+
+
+  <Paragraph FontSize="24">
+    <Bold>
+      <Run >{{  Model.Person.Name }}</Run>
+      <Run >{{  Model.Person.Surname }}</Run>
+      <Run >{{  Model.Person.LastName }}</Run>
+    </Bold>
+    <Floater Width="150" HorizontalAlignment="Right">
+
+      <BlockUIContainer>
+        <Image Source ="{{ Model.Person.Photo }}" HorizontalAlignment="Right" Width="90" Height="90" Margin="0,0,30,0"></Image>
+      </BlockUIContainer>
+    </Floater>
+
+  </Paragraph>
+  <Paragraph>
+  </Paragraph>
+
+  <Paragraph FontSize="16">
+    <Run>{{  Model.Person.BirthDay }}</Run>
+    <Run>({{  Model.Person.YearsOld }})y.o.</Run>
+    <Run>{{  Model.Person.Country }} ,</Run>
+    <Run>{{  Model.Person.City }}</Run>
+  </Paragraph>
+  <Paragraph FontSize="16">
+    <Run>{{  Model.Person.Phone }}</Run>
+  </Paragraph>
+  <Paragraph FontSize="16">
+    <Run>{{  Model.Person.Email }}</Run>
+  </Paragraph>
   <!-- Person END-->
 
 
 
   <!-- Skills-->
-  <BlockUIContainer>
-    <StackPanel Orientation="Horizontal" Height="Auto">
-      <TextBlock Foreground="#003481" FontWeight="Bold" Grid.Column="0" Grid.Row="0" FontSize="16">
-        <Run >My Skills:</Run>
-      </TextBlock>
-    </StackPanel>
-  </BlockUIContainer>
+  <Paragraph FontSize="16">
+    <Bold>My Skills:</Bold>
+  </Paragraph>
 
+  <List>
     {% for skill in Model.Skills -%}
-  <BlockUIContainer>
-    <Grid>
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="Auto"/>
-        <ColumnDefinition Width="Auto"/>
-        <ColumnDefinition Width="Auto"/>
-        <ColumnDefinition />
-      </Grid.ColumnDefinitions>
-      <Grid.RowDefinitions>
-        <RowDefinition Height="Auto"/>
-        <RowDefinition Height="Auto"/>
-      </Grid.RowDefinitions>
-
-      <Ellipse Fill="#003481" Width="5" Height="5" Margin="5"/>
-
-      <TextBlock Text="{{  skill }}" Grid.Column="1"/>
-
-    </Grid>
-  </BlockUIContainer>
+    <ListItem>
+      <Paragraph>
+        {{ skill }}
+      </Paragraph>
+    </ListItem>
     {% endfor -%}
+  </List>
   <!-- Skills END-->
 
 
 
-  <!-- PreviousExperience--> 
-  <BlockUIContainer>
-    <StackPanel Orientation="Horizontal" Height="Auto">
-      <TextBlock Foreground="#003481" FontWeight="Bold" Grid.Column="0" Grid.Row="0" FontSize="16">
-        <Run >Experience:</Run>
-      </TextBlock>
-    </StackPanel>
-  </BlockUIContainer>
+  <!-- PreviousExperience-->
+  <Paragraph FontSize="16">
+    <Bold>Experience:</Bold>
+  </Paragraph>
 
   {% for exp in Model.PreviousExperience -%}
 
@@ -134,27 +145,15 @@
     </Grid>
   </BlockUIContainer>
 
+  <List>
     {% for resp in exp.Responsibilities -%}
-    <BlockUIContainer>
-      <Grid>
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="40"/>
-          <ColumnDefinition Width="Auto"/>
-          <ColumnDefinition Width="Auto"/>
-          <ColumnDefinition />
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-          <RowDefinition Height="Auto"/>
-          <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-
-        <Ellipse Fill="#003481" Width="5" Height="5" Margin="5"  Grid.Column="1"/>
-
-        <TextBlock Text="{{ resp }}" Grid.Column="2"/>
-
-      </Grid>
-    </BlockUIContainer>
+    <ListItem>
+      <Paragraph>
+        {{ resp }}
+      </Paragraph>
+    </ListItem>
     {% endfor -%}
+  </List>
 
   {% endfor -%}
   <!-- PreviousExperience END-->
