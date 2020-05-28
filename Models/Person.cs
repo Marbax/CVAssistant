@@ -6,7 +6,6 @@ namespace Models
     public class Person : ILiquidizable
     {
         private string _name;
-
         public string Name
         {
             get { return _name; }
@@ -14,7 +13,6 @@ namespace Models
         }
 
         private string _surname;
-
         public string Surname
         {
             get { return _surname; }
@@ -22,7 +20,6 @@ namespace Models
         }
 
         private string _lastName;
-
         public string LastName
         {
             get { return _lastName; }
@@ -30,7 +27,6 @@ namespace Models
         }
 
         private System.DateTime _bDay;
-
         public System.DateTime BirthDay
         {
             get { return _bDay; }
@@ -43,7 +39,6 @@ namespace Models
         }
 
         private string _phone;
-
         public string Phone
         {
             get { return _phone; }
@@ -51,7 +46,6 @@ namespace Models
         }
 
         private string _city;
-
         public string City
         {
             get { return _city; }
@@ -59,8 +53,6 @@ namespace Models
         }
 
         private string _country;
-
-
         public string Country
         {
             get { return _country; }
@@ -68,7 +60,6 @@ namespace Models
         }
 
         private string _email;
-
         public string Email
         {
             get { return _email; }
@@ -76,8 +67,6 @@ namespace Models
         }
 
         private string _photo;
-
-
         public string Photo
         {
             get { return _photo; }
@@ -86,8 +75,7 @@ namespace Models
 
         public Person(string name, string surname, string lastName, DateTime birthDay, string phone, string email, string photo) :
             this(name, surname, lastName, birthDay, phone, null, null, email, photo)
-        {
-        }
+        { }
 
         public Person(string name, string surname, string lastName, DateTime birthDay, string phone, string city, string country, string email, string photo)
         {

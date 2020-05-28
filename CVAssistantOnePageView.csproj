@@ -55,6 +55,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="ConstructorExperienceUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ConstructorPersonUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ConstructorSkillsUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ConstructorStyle.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -70,6 +82,15 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ConstructorExperienceUserControl.xaml.cs">
+      <DependentUpon>ConstructorExperienceUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ConstructorPersonUserControl.xaml.cs">
+      <DependentUpon>ConstructorPersonUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ConstructorSkillsUserControl.xaml.cs">
+      <DependentUpon>ConstructorSkillsUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="ConstructorUserControl.xaml.cs">
       <DependentUpon>ConstructorUserControl.xaml</DependentUpon>

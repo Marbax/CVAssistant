@@ -7,7 +7,6 @@ namespace Models
     public class Experience : ILiquidizable
     {
         private string _company;
-
         public string Company
         {
             get { return _company; }
@@ -15,7 +14,6 @@ namespace Models
         }
 
         private string _position;
-
         public string Position
         {
             get { return _position; }
@@ -23,7 +21,6 @@ namespace Models
         }
 
         private System.DateTime _startDate;
-
         public System.DateTime StartDate
         {
             get { return _startDate; }
@@ -31,23 +28,20 @@ namespace Models
         }
 
         private System.DateTime _endDate;
-
         public System.DateTime EndDate
         {
             get { return _endDate; }
             set { _endDate = value; }
         }
 
-        private List<string> _r14s;
-
-
-        public List<string> Responsibilities
+        private IEnumerable<string> _r14s;
+        public IEnumerable<string> Responsibilities
         {
             get { return _r14s; }
             set { _r14s = value; }
         }
 
-        public Experience(string company, string position, DateTime startDate, DateTime endDate, List<string> responsibilities)
+        public Experience(string company, string position, DateTime startDate, DateTime endDate, IEnumerable<string> responsibilities)
         {
             Company = company;
             Position = position;

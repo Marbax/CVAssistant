@@ -16,14 +16,13 @@ using System.Windows.Shapes;
 namespace CVAssistant
 {
     /// <summary>
-    /// Interaction logic for ConstructorUserControl.xaml
+    /// Interaction logic for ConstructorSkillsUserControl.xaml
     /// </summary>
-    public partial class ConstructorUserControl : UserControl
+    public partial class ConstructorSkillsUserControl : UserControl
     {
-        public ConstructorUserControl()
+        public ConstructorSkillsUserControl()
         {
             InitializeComponent();
         }
-
     }
 }
