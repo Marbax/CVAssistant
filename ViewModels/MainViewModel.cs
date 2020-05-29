@@ -1,17 +1,22 @@
-﻿using Commands;
-using Microsoft.Win32;
-using Models;
+﻿using Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows.Documents;
-using System.Windows.Input;
-using System.Linq;
-using System.ComponentModel;
 
 namespace ViewModels
 {
     public class MainViewModel : AViewModel
     {
+        private ObservableCollection<Log> _logs;
+        public ObservableCollection<Log> Logs
+        {
+            get { return _logs; }
+            set { _logs = value; }
+        }
+
         readonly PDFAssistant.PDFAssistant _PDFAssistant = new PDFAssistant.PDFAssistant();
 
         private CurriculumVitaeViewModel _currentCV;
@@ -24,8 +29,15 @@ namespace ViewModels
 
         public MainViewModel()
         {
-            CurrentCV = GetDefaultCV();
+            if (LoadLogs() == false)
+            {
+                Logs = new ObservableCollection<Log>();
+            }
 
+            if (LoadData() == false)
+            {
+                CurrentCV = GetDefaultCV();
+            }
         }
 
 
@@ -64,6 +76,89 @@ namespace ViewModels
         }
 
 
+        #region Serialization
+        readonly BinaryFormatter _bf = new BinaryFormatter();
+
+        private string _dataPath = "LastCV.dat";
+        public string DataPath
+        {
+            get { return _dataPath; }
+            set { SetProperty(ref _dataPath, value); }
+        }
+
+
+        private bool LoadData()
+        {
+            try
+            {
+                using (FileStream fs = new FileStream(DataPath, FileMode.Open))
+                {
+                    CurriculumVitae cv = (CurriculumVitae)_bf.Deserialize(fs);
+                    CurrentCV = new CurriculumVitaeViewModel(cv);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"\nSerealization ex :\n{ex.Message}\n");
+                Logs.Add(new Log($"Deserealization ex :\n{ex.Message}\n", DateTime.Now));
+                return false;
+            }
+
+            return true;
+        }
+        public bool SaveData()
+        {
+            try
+            {
+                using (FileStream fs = new FileStream(DataPath, FileMode.Create))
+                {
+                    _bf.Serialize(fs, CurrentCV.CurriculumVitae);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"\nSerealization ex :\n{ex.Message}\n");
+                Logs.Add(new Log($"Serealization ex :\n{ex.Message}\n", DateTime.Now));
+                return false;
+            }
+            return true;
+        }
+
+        private bool LoadLogs()
+        {
+            try
+            {
+                using (FileStream fs = new FileStream("logs.dat", FileMode.Open))
+                {
+                    Logs = (ObservableCollection<Log>)_bf.Deserialize(fs);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"\nSerealization ex :\n{ex.Message}\n");
+                return false;
+            }
+            return true;
+        }
+        public bool SaveLogs()
+        {
+            try
+            {
+                using (FileStream fs = new FileStream("logs.dat", FileMode.Create))
+                {
+                    _bf.Serialize(fs, Logs);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"\nSerealization ex :\n{ex.Message}\n");
+                return false;
+            }
+
+            return true;
+        }
+        #endregion
 
 
     }

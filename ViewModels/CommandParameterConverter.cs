@@ -4,6 +4,7 @@ using System.Windows.Data;
 
 namespace ViewModels
 {
+    [Serializable]
     public class CommandParameterConverter : IMultiValueConverter
     {
 

@@ -21,21 +21,27 @@ namespace CVAssistant
     /// </summary>
     public partial class MainWindow : Window
     {
-        ViewModels.MainViewModel mv = new ViewModels.MainViewModel();
+        ViewModels.MainViewModel _mvm = new ViewModels.MainViewModel();
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = mv;
+            DataContext = _mvm;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            mv.CreateTestPDF(DocViewer.Document);
+            _mvm.CreateTestPDF(DocViewer.Document);
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            DocViewer.Document = mv.OpenPDF();
+            DocViewer.Document = _mvm.OpenPDF();
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            _mvm.SaveData();
+            _mvm.SaveLogs();
         }
     }
 }

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -18,7 +19,6 @@ namespace ViewModels
             get => _curriculumVitae;
             //set => SetProperty(ref _curriculumVitae, value);
         }
-
 
         #region Commands
         private readonly RelayCommand _addSkill;
@@ -82,7 +82,7 @@ namespace ViewModels
         {
             _curriculumVitae = curriculumVitae;
             Person = new PersonViewModel(curriculumVitae.Person);
-            curriculumVitae.Skills.ToList().ForEach(i => Skills.Add(new SkillViewModel(i)));
+            _curriculumVitae.Skills.ToList().ForEach(i => Skills.Add(new SkillViewModel(i)));
             _curriculumVitae.PreviousExperience.ToList().ForEach(i => PreviousExperience.Add(new ExperienceViewModel(i)));
 
 
@@ -165,11 +165,10 @@ namespace ViewModels
         #region Remove Responsobility
         private bool CanRemoveResponsobilityToCerteinExperience(object arg)
         {
-            var values = (object[])arg; 
-            if (values == null || values.Length<2 || values[1]== DependencyProperty.UnsetValue)
+            var values = (object[])arg;
+            if (values == null || values.Length < 2 || values[1] == DependencyProperty.UnsetValue)
                 return false;
             int expId = (int)values[0];
-            Console.WriteLine($"\n\n{(int)values[0]} - (int){values[1]}\n\n");
             int respId = (int)values[1];
 
             return expId >= 0 && respId >= 0 && expId < PreviousExperience.Count && respId < PreviousExperience[expId].Responsibilities.Count;
@@ -199,6 +198,7 @@ namespace ViewModels
             PreviousExperience.ElementAt(expId).Responsibilities.Add(new ResponsobilityViewModel("Responsobility"));
         }
         #endregion
+
 
     }
 

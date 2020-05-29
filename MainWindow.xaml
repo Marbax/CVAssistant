@@ -8,6 +8,7 @@
         Background="#FF333333"
         Title="CVAssistant" 
         WindowStartupLocation="CenterScreen"
+        Closing="Window_Closing"
         >
 
     <Grid>

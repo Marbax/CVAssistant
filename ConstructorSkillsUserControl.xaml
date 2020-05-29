@@ -24,7 +24,7 @@
         </Grid.RowDefinitions>
 
         <ListBox x:Name="lbSkils" Grid.Row="1" Grid.Column="1" Grid.RowSpan="4" 
-                          ItemsSource="{Binding Path=CurrentCV.Skills}"
+                          ItemsSource="{Binding Path=CurrentCV.Skills,Mode=TwoWay}"
                           >
             <ListBox.ItemTemplate>
                 <DataTemplate>

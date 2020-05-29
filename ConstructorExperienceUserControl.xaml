@@ -78,7 +78,7 @@
                     Grid.Row="1" Grid.RowSpan="2">
             <Label Content="Responsibilities" Height="25"/>
             <ListBox x:Name="lbResponsibilities" 
-                 ItemsSource="{Binding ElementName=lvExperience, Path=SelectedItem.Responsibilities}"
+                 ItemsSource="{Binding ElementName=lvExperience, Path=SelectedItem.Responsibilities , Mode=TwoWay}"
                  Height="{Binding ElementName=lvExperience,Path=Height}"
                  >
                 <ListBox.ItemTemplate>

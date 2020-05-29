@@ -3,6 +3,7 @@ using System;
 
 namespace Models
 {
+    [Serializable]
     public class Person : ILiquidizable
     {
         private string _name;

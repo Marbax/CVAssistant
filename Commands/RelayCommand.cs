@@ -3,6 +3,7 @@ using System.Windows.Input;
 
 namespace Commands
 {
+    [Serializable]
     public class RelayCommand : ICommand
     {
         private readonly Action<object> _execute;

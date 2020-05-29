@@ -1,8 +1,10 @@
 ﻿using DotLiquid;
+using System;
 using System.Collections.Generic;
 
 namespace Models
 {
+    [Serializable]
     public class CurriculumVitae : ILiquidizable
     {
         private Person _person;

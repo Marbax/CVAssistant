@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 namespace Models
 {
+    [Serializable]
     public class Experience : ILiquidizable
     {
         private string _company;

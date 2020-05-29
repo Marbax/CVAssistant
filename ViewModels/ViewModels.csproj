@@ -53,6 +53,7 @@
     <Compile Include="CommandParameterConverter.cs" />
     <Compile Include="CurriculumVitaeViewModel.cs" />
     <Compile Include="ExperienceViewModel.cs" />
+    <Compile Include="Log.cs" />
     <Compile Include="MainViewModel.cs" />
     <Compile Include="PersonViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
