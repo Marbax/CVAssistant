@@ -5,23 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:Views="clr-namespace:CVAssistant"
         mc:Ignorable="d"
-        Background="#FFF8F1E9"
-        Title="MainWindow" 
-        Height="450" 
-        Width="800"
+        Background="#FF333333"
+        Title="CVAssistant" 
         WindowStartupLocation="CenterScreen"
         >
 
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="35"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition Width="1*"></ColumnDefinition>
             <ColumnDefinition Width="Auto"></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition Width="1*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
         <Menu Grid.Row="0" Grid.Column="0">

@@ -8,43 +8,39 @@
              >
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition ></ColumnDefinition>
-            <ColumnDefinition Width="Auto"></ColumnDefinition>
-            <ColumnDefinition Width="Auto"></ColumnDefinition>
-            <ColumnDefinition Width="Auto"></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition Width="5"/>
+            <ColumnDefinition Width="2*"></ColumnDefinition>
+            <ColumnDefinition Width="1*"></ColumnDefinition>
+            <ColumnDefinition Width="1*"></ColumnDefinition>
+            <ColumnDefinition Width="5"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition ></RowDefinition>
+            <RowDefinition Height="5"/>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition ></RowDefinition>
+            <RowDefinition Height="5"/>
         </Grid.RowDefinitions>
 
         <ListBox x:Name="lbSkils" Grid.Row="1" Grid.Column="1" Grid.RowSpan="4" 
-                 MinWidth="120" MinHeight="120" MaxHeight="150" MaxWidth="200"
                           ItemsSource="{Binding Path=CurrentCV.Skills}"
                           >
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <TextBox Text="{Binding Path=Name , Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                     BorderThickness="0" 
-                                     Height="Auto" 
-                                     Width="{Binding ElementName=lbSkills,Path=Width , Mode=TwoWay}" 
-                                     Margin="0"/>
+                    <TextBox Text="{Binding Path=Name , Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
 
-        <TextBox x:Name="tbSelectedSkill" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2"/>
+        <TextBox x:Name="tbSelectedSkill" Grid.Row="1" Grid.RowSpan="2" Grid.Column="2" Grid.ColumnSpan="2"/>
 
-        <Button Grid.Row="2" Grid.Column="2" Content="Add Skill" 
-                        Command="{Binding Path=CurrentCV.AddSkill}"
-                        CommandParameter="{Binding ElementName=tbSelectedSkill,Path=Text}"/>
+        <Button Grid.Row="3" Grid.Column="2" Content="Add Skill" 
+                Command="{Binding Path=CurrentCV.AddSkill}"
+                CommandParameter="{Binding ElementName=tbSelectedSkill,Path=Text}"/>
 
-        <Button Grid.Row="2" Grid.Column="3" Content="Remove Skill" Command="{Binding Path=CurrentCV.RemoveSkill}"
+        <Button Grid.Row="3" Grid.Column="3" Content="Remove Skill" 
+                Command="{Binding Path=CurrentCV.RemoveSkill}"
                 CommandParameter="{Binding ElementName=lbSkils,Path=SelectedIndex}"/>
 
     </Grid>

@@ -6,9 +6,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:Views="clr-namespace:CVAssistant"
              mc:Ignorable="d" 
-             Background="#FFF8F1E9" 
              >
-    
+
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -18,23 +17,22 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition Width="Auto"></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition Width="5"/>
+            <ColumnDefinition Width="1*"></ColumnDefinition>
+            <ColumnDefinition Width="5"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition></RowDefinition>
+            <RowDefinition Height="5"/>
+            <RowDefinition Height="1*"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="5"/>
         </Grid.RowDefinitions>
 
         <Views:ConstructorPersonUserControl Grid.Row="1" Grid.Column="1"/>
-        
+
         <StackPanel Orientation="Horizontal" Height="15" Background="Green" Grid.Row="2" Grid.Column="1"/>
 
         <Views:ConstructorSkillsUserControl Grid.Row="3" Grid.Column="1"/>

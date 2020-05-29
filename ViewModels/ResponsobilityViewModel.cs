@@ -2,7 +2,7 @@
 
 namespace ViewModels
 {
-    public class Responsobility : AViewModel
+    public class ResponsobilityViewModel : AViewModel
     {
         private string _name;
         public string Name
@@ -11,14 +11,14 @@ namespace ViewModels
             set { SetProperty(ref _name, value); }
         }
 
-        public Responsobility(string name)
+        public ResponsobilityViewModel(string name)
         {
             Name = name;
         }
 
         public override string ToString() => Name.ToString();
 
-        public override bool Equals(object obj) => obj is Responsobility && (obj as Responsobility).Name.Equals(this.Name);
+        public override bool Equals(object obj) => obj is ResponsobilityViewModel && (obj as ResponsobilityViewModel).Name.Equals(this.Name);
 
         public override int GetHashCode() => 539060726 + EqualityComparer<string>.Default.GetHashCode(Name);
     }

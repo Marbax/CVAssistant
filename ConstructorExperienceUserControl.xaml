@@ -4,32 +4,38 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:Views="clr-namespace:CVAssistant"
+             xmlns:ViewModel="clr-namespace:ViewModels;assembly=ViewModels"
              mc:Ignorable="d" 
              >
+
+    <UserControl.Resources>
+        <ViewModel:CommandParameterConverter x:Key="CmdConverter"/>
+    </UserControl.Resources>
+
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition Width="Auto"></ColumnDefinition>
-            <ColumnDefinition Width="Auto"></ColumnDefinition>
-            <ColumnDefinition Width="Auto"></ColumnDefinition>
-            <ColumnDefinition Width="Auto"></ColumnDefinition>
-            <ColumnDefinition Width="Auto"></ColumnDefinition>
-            <ColumnDefinition ></ColumnDefinition>
+            <ColumnDefinition Width="5"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="5"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition></RowDefinition>
+            <RowDefinition Height="5"/>
+            <RowDefinition Height="25"></RowDefinition>
+            <RowDefinition Height="3*"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="5"/>
         </Grid.RowDefinitions>
 
         <ListView ItemsSource="{Binding Path=CurrentCV.PreviousExperience , Mode=TwoWay}" 
-                  Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="3" Grid.RowSpan="5"
-                  MinWidth="200" MinHeight="120"
+                  x:Name="lvExperience"
+                  Grid.Column="1" Grid.ColumnSpan="3" 
+                  Grid.Row="1" Grid.RowSpan="2"
                   >
+
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Company">
@@ -62,6 +68,51 @@
                     </GridViewColumn>
                 </GridView>
             </ListView.View>
+
         </ListView>
+
+        <GridSplitter Grid.Column="4" Grid.Row="0" Grid.RowSpan="4" Width="5" HorizontalAlignment="Center" VerticalAlignment="Stretch"/>
+
+        <StackPanel Orientation="Vertical" 
+                    Grid.Column="5" 
+                    Grid.Row="1" Grid.RowSpan="2">
+            <Label Content="Responsibilities" Height="25"/>
+            <ListBox x:Name="lbResponsibilities" 
+                 ItemsSource="{Binding ElementName=lvExperience, Path=SelectedItem.Responsibilities}"
+                 Height="{Binding ElementName=lvExperience,Path=Height}"
+                 >
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBox Text="{Binding Path=Name , Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </StackPanel>
+
+        <!--#region BUTTONS-->
+        <Button Grid.Row="3" Grid.Column="1" Content="Add Work Place" 
+                        Command="{Binding Path=CurrentCV.AddExperience}"/>
+
+        <Button Grid.Row="3" Grid.Column="2" Content="Remove Work Place" 
+                        Command="{Binding Path=CurrentCV.RemoveExperience}"
+                        CommandParameter="{Binding ElementName=lvExperience, Path=SelectedIndex}"/>
+
+        <Button Grid.Row="3" Grid.Column="3" Content="Add Responsobility" 
+                        Command="{Binding Path=CurrentCV.AddResponsobility}"
+                        CommandParameter="{Binding ElementName=lvExperience , Path=SelectedIndex}">
+
+        </Button>
+
+        <Button Grid.Row="3" Grid.Column="5" Content="Remove Responsobility" 
+                        Command="{Binding Path=CurrentCV.RemoveResponsobility}">
+            <Button.CommandParameter>
+                <MultiBinding Converter="{StaticResource CmdConverter}">
+                    <Binding ElementName="lvExperience" Path="SelectedIndex"/>
+                    <Binding ElementName="lbResponsibilities" Path="SelectedIndex"/>
+                </MultiBinding>
+            </Button.CommandParameter>
+        </Button>
+        <!--#endregion-->
+
     </Grid>
 </UserControl>

@@ -68,8 +68,8 @@ namespace ViewModels
             }
         }
 
-        private ObservableCollection<Responsobility> _r14s = new ObservableCollection<Responsobility>();
-        public ObservableCollection<Responsobility> Responsibilities
+        private ObservableCollection<ResponsobilityViewModel> _r14s = new ObservableCollection<ResponsobilityViewModel>();
+        public ObservableCollection<ResponsobilityViewModel> Responsibilities
         {
             get { return _r14s; }
             set { SetProperty(ref _r14s, value); }
@@ -79,7 +79,7 @@ namespace ViewModels
         public ExperienceViewModel(Experience experience)
         {
             Experience = experience;
-            experience.Responsibilities.ToList().ForEach(i => Responsibilities.Add(new Responsobility(i)));
+            experience.Responsibilities.ToList().ForEach(i => Responsibilities.Add(new ResponsobilityViewModel(i)));
         }
 
 

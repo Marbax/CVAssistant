@@ -14,7 +14,6 @@ namespace ViewModels
     {
         readonly PDFAssistant.PDFAssistant _PDFAssistant = new PDFAssistant.PDFAssistant();
 
-
         private CurriculumVitaeViewModel _currentCV;
         public CurriculumVitaeViewModel CurrentCV
         {

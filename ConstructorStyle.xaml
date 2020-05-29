@@ -2,26 +2,258 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:CVAssistant">
 
-    <Style x:Key="BaseSizes" TargetType="Control">
+
+    <!--#region COLORS-->
+    <Style x:Key="DarkestStyle">
+        <Setter Property="ItemsControl.Background" Value="#1e1e1e" />
+        <Setter Property="ItemsControl.Foreground" Value="WhiteSmoke" />
+    </Style>
+    <Style x:Key="DarkerStyle">
+        <Setter Property="ItemsControl.Background" Value="#2d2d30" />
+        <Setter Property="ItemsControl.Foreground" Value="WhiteSmoke" />
+    </Style>
+    <Style x:Key="DarkStyle">
+        <Setter Property="ItemsControl.Background" Value="#3e3e42" />
+        <Setter Property="ItemsControl.Foreground" Value="WhiteSmoke" />
+    </Style>
+    <Style x:Key="defWinBack">
         <Style.Setters>
-            <Setter Property="Control.Width" Value="120" />
-            <Setter Property="Control.Height" Value="25" />
-            <Setter Property="Control.Margin" Value="3" />
-            <Setter Property="Control.VerticalContentAlignment" Value="Center" />
-            <Setter Property="Control.HorizontalContentAlignment" Value="Center" />
-            <Setter Property="Control.FontSize" Value="14" />
+            <Setter Property="Control.Background" Value="#FF333333" />
         </Style.Setters>
     </Style>
+    <!--#endregion-->
+
+
+    <!--#region BUTTON-->
+    <ControlTemplate x:Key="ButtonTemplate" TargetType="{x:Type Button}">
+        <Border Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    MaxWidth="{TemplateBinding MaxWidth}"
+                    CornerRadius="10">
+            <ContentPresenter Content="{TemplateBinding Content}"
+                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                  Margin="{TemplateBinding Padding}"
+                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Cursor" Value="Hand" />
+            </Trigger>
+            <EventTrigger RoutedEvent="Button.Click">
+                <BeginStoryboard>
+                    <Storyboard>
+                        <ColorAnimation Duration="0:0:0.4" To="Orange" Storyboard.TargetProperty="Background.Color" AutoReverse="True"></ColorAnimation>
+                        <DoubleAnimation Duration="0:0:0.15" To="13" Storyboard.TargetProperty="FontSize" AutoReverse="True"></DoubleAnimation>
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <Style x:Key="ButtonStyle" TargetType="{x:Type Button}">
+        <Style.Setters>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="MinHeight" Value="23"/>
+            <Setter Property="MinWidth" Value="50"/>
+            <Setter Property="Template" Value="{StaticResource ButtonTemplate}"/>
+        </Style.Setters>
+    </Style>
+
+    <Style BasedOn="{StaticResource ButtonStyle}" TargetType="{x:Type Button}">
+        <Style.Setters>
+            <Setter Property="Background">
+                <Setter.Value >
+                    <SolidColorBrush Color="Gray"/>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Height" Value="23" />
+            <Setter Property="Foreground" Value="WhiteSmoke"/>
+            <Setter Property="Margin" Value="2" />
+        </Style.Setters>
+        <Style.Triggers>
+            <EventTrigger RoutedEvent="UIElement.MouseEnter">
+                <BeginStoryboard>
+                    <Storyboard>
+                        <ColorAnimation Duration="0:0:0.4" To="LightGray" Storyboard.TargetProperty="Background.Color"></ColorAnimation>
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
+            <EventTrigger RoutedEvent="Button.MouseLeave">
+                <BeginStoryboard>
+                    <Storyboard>
+                        <ColorAnimation Duration="0:0:0.4" To="Gray" Storyboard.TargetProperty="Background.Color"></ColorAnimation>
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
+        </Style.Triggers>
+    </Style>
+    <!--#endregion-->
+
+
+    <!--#region TEXTBOX-->
+    <ControlTemplate x:Key="TextBoxTemplate" TargetType="{x:Type TextBox}">
+        <Border Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    MaxWidth="{TemplateBinding MaxWidth}"
+                    CornerRadius="5">
+            <ScrollViewer x:Name="PART_ContentHost" Margin="{TemplateBinding Padding}"/>
+        </Border>
+    </ControlTemplate>
+
+    <Style x:Key="textBoxStyle" TargetType="{x:Type TextBox}">
+        <Style.Setters>
+            <Setter Property="Background" Value="DimGray"/>
+            <Setter Property="BorderBrush" Value="Silver"/>
+            <Setter Property="BorderThickness" Value="0,2"/>
+            <Setter Property="Foreground" Value="WhiteSmoke"/>
+            <Setter Property="Padding" Value="1,0"/>
+            <Setter Property="Height" Value="22" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Template" Value="{StaticResource TextBoxTemplate}"/>
+            <Setter Property="Margin" Value="2" />
+        </Style.Setters>
+        <Style.Triggers>
+            <EventTrigger RoutedEvent="GotFocus">
+                <BeginStoryboard>
+                    <Storyboard >
+                        <ColorAnimation Duration="0:0:0.4" To="White" Storyboard.TargetProperty="BorderBrush.Color"/>
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
+            <EventTrigger RoutedEvent="LostFocus">
+                <BeginStoryboard>
+                    <Storyboard >
+                        <ColorAnimation Duration="0:0:0.4" To="Silver" Storyboard.TargetProperty="BorderBrush.Color"/>
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="TextBox" BasedOn="{StaticResource textBoxStyle}"/>
+    <!--#endregion-->
+
+
+    <!--#region DATE_PICKER-->
+    <Style TargetType="DatePicker">
+        <Style.Setters>
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="WhiteSmoke" />
+        </Style.Setters>
+    </Style>
+
+
+    <Style TargetType="DatePickerTextBox" BasedOn="{StaticResource textBoxStyle}">
+    </Style>
+    <!--#endregion-->
 
     
-    <Style TargetType="Button" BasedOn="{StaticResource BaseSizes}">
+    <!--#region LISTS_SIZES-->
+    <Style x:Key="listSize" TargetType="Control">
         <Style.Setters>
+            <Setter Property="MinHeight" Value="100" />
+            <Setter Property="MaxHeight" Value="150" />
+            <Setter Property="MinWidth" Value="100" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Margin" Value="5" />
+        </Style.Setters>
+    </Style>
+    <!--#endregion-->
+
+    
+    <!--#region LIST_BOX-->
+    <Style TargetType="ListBox"  BasedOn="{StaticResource listSize}">
+        <Style.Setters>
+            <Setter Property="Background" Value="#3e3e42" />
+        </Style.Setters>
+    </Style>
+    <!--#endregion-->
+
+
+    <!--#region LIST_VIEW-->
+    <Style TargetType="ListView" BasedOn="{StaticResource listSize}">
+        <Style.Setters>
+            <Setter Property="Background" Value="#3e3e42" />
         </Style.Setters>
     </Style>
 
-    <Style TargetType="TextBox" BasedOn="{StaticResource BaseSizes}">
+
+    <Style TargetType="GridViewColumnHeader">
         <Style.Setters>
+            <Setter Property="Background" Value="#1e1e1e" />
+            <Setter Property="BorderBrush" Value="#3e3e42" />
+            <Setter Property="Foreground" Value="WhiteSmoke" />
         </Style.Setters>
     </Style>
+    <!--#endregion-->
+
+
+    <!--#region FlowDocumentReader-->
+    <Style TargetType="FlowDocumentReader">
+        <Style.Setters>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="#3e3e42" />
+            <Setter Property="Foreground" Value="WhiteSmoke" />
+        </Style.Setters>
+    </Style>
+    <!--#endregion-->
+
+
+    <!--#region FlowDocument-->
+    <Style TargetType="FlowDocument">
+        <Style.Setters>
+            <Setter Property="Background" Value="WhiteSmoke" />
+            <Setter Property="Foreground" Value="Black" />
+        </Style.Setters>
+    </Style>
+    <!--#endregion-->
+
+
+    <!--#region SCROLLS-->
+    <Style TargetType="ScrollBar">
+        <Style.Setters>
+            <Setter Property="Foreground" Value="#FF333333" />
+            <Setter Property="Grid.Background" Value="WhiteSmoke" />
+            <Setter Property="BorderThickness" Value="0" />
+        </Style.Setters>
+    </Style>
+    <!--#endregion-->
+
+
+    <!--#region MENU-->
+    <Style x:Key="menuItemStyle" TargetType="Control">
+        <Style.Setters>
+            <Setter Property="Background" Value="DimGray"/>
+            <Setter Property="BorderBrush" Value="Silver"/>
+            <Setter Property="BorderThickness" Value="0,2"/>
+            <Setter Property="Foreground" Value="WhiteSmoke"/>
+            <Setter Property="FontSize" Value="14" />
+        </Style.Setters>
+    </Style>
+
+    <Style TargetType="Menu" BasedOn="{StaticResource menuItemStyle}"></Style>
+    <Style TargetType="MenuItem" BasedOn="{StaticResource menuItemStyle}">
+        <Style.Setters>
+            <Setter Property="BorderThickness" Value="0" />
+        </Style.Setters>
+    </Style>
+    <!--#endregion-->
+
+
+    <!--#region LABEL-->
+    <Style TargetType="{x:Type Label}">
+        <Style.Setters>
+            <Setter Property="Background" Value="#1e1e1e" />
+            <Setter Property="BorderBrush" Value="#3e3e42" />
+            <Setter Property="Foreground" Value="WhiteSmoke" />
+            <Setter Property="Height" Value="25" />
+        </Style.Setters>
+    </Style>
+    <!--#endregion-->
+
 
 </ResourceDictionary>

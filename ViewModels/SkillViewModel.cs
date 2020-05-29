@@ -2,7 +2,7 @@
 
 namespace ViewModels
 {
-    public class Skill : AViewModel
+    public class SkillViewModel : AViewModel
     {
         private string _name;
         public string Name
@@ -11,14 +11,14 @@ namespace ViewModels
             set { SetProperty(ref _name, value); }
         }
 
-        public Skill(string name)
+        public SkillViewModel(string name)
         {
             Name = name;
         }
 
         public override bool Equals(object obj)
         {
-            return obj is Skill && (obj as Skill).Name.Equals(this.Name);
+            return obj is SkillViewModel && (obj as SkillViewModel).Name.Equals(this.Name);
         }
 
         public override int GetHashCode()

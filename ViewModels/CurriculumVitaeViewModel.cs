@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Windows;
 using System.Windows.Input;
 
 namespace ViewModels
@@ -19,11 +20,25 @@ namespace ViewModels
         }
 
 
+        #region Commands
         private readonly RelayCommand _addSkill;
         public ICommand AddSkill => _addSkill;
 
         private readonly RelayCommand _removeSkill;
         public ICommand RemoveSkill => _removeSkill;
+
+        private readonly RelayCommand _addExperience;
+        public ICommand AddExperience => _addExperience;
+
+        private readonly RelayCommand _removeExperience;
+        public ICommand RemoveExperience => _removeExperience;
+
+        private readonly RelayCommand _addResponsobility;
+        public ICommand AddResponsobility => _addResponsobility;
+
+        private readonly RelayCommand _removeResponsobility;
+        public ICommand RemoveResponsobility => _removeResponsobility;
+        #endregion
 
 
         // that works to and were bindable , wtf
@@ -47,8 +62,8 @@ namespace ViewModels
             set { SetProperty(ref _person, value); }
         }
 
-        private ObservableCollection<Skill> _skills = new ObservableCollection<Skill>();
-        public ObservableCollection<Skill> Skills
+        private ObservableCollection<SkillViewModel> _skills = new ObservableCollection<SkillViewModel>();
+        public ObservableCollection<SkillViewModel> Skills
         {
             get { return _skills; }
             set { SetProperty(ref _skills, value); }
@@ -67,15 +82,17 @@ namespace ViewModels
         {
             _curriculumVitae = curriculumVitae;
             Person = new PersonViewModel(curriculumVitae.Person);
-            curriculumVitae.Skills.ToList().ForEach(i => Skills.Add(new Skill(i)));
+            curriculumVitae.Skills.ToList().ForEach(i => Skills.Add(new SkillViewModel(i)));
             _curriculumVitae.PreviousExperience.ToList().ForEach(i => PreviousExperience.Add(new ExperienceViewModel(i)));
 
 
             _addSkill = new RelayCommand(AddSkillToSkills, CanAddSkillToSkills);
             _removeSkill = new RelayCommand(RemoveSkillFromSkills, CanRemoveSkillFromSkills);
-
+            _addExperience = new RelayCommand(AddExpToPreviousExperience);
+            _removeExperience = new RelayCommand(RemoveExpFromPreviousExperience, CanRemoveExpFromPreviousExperience);
+            _addResponsobility = new RelayCommand(AddResponsobilityToCerteinExperience, CanAddResponsobilityToCerteinExperience);
+            _removeResponsobility = new RelayCommand(RemoveResponsobilityToCerteinExperience, CanRemoveResponsobilityToCerteinExperience);
         }
-
 
 
         public void UpdateSource()
@@ -91,6 +108,7 @@ namespace ViewModels
             CurriculumVitae.PreviousExperience = tmpExp;
         }
 
+        #region Remove Skill
         private void RemoveSkillFromSkills(object obj)
         {
             int skillId = (int)obj;
@@ -104,10 +122,12 @@ namespace ViewModels
 
             return skillId >= 0 && Skills.Count > skillId;
         }
+        #endregion
 
+        #region Add Skill
         private void AddSkillToSkills(object obj)
         {
-            Skill skill = new Skill((obj as string).Trim(' '));
+            SkillViewModel skill = new SkillViewModel((obj as string).Trim(' '));
             Skills.Add(skill);
             _curriculumVitae.Skills.ToList().Add(skill.Name);
             Console.WriteLine($"Skill \"{skill.Name}\" added to skills");
@@ -115,10 +135,70 @@ namespace ViewModels
         private bool CanAddSkillToSkills(object arg)
         {
             string skillName = (arg as string);
-            Skill skill = new Skill(skillName.Trim(' '));
+            SkillViewModel skill = new SkillViewModel(skillName.Trim(' '));
             return !string.IsNullOrEmpty(skill.Name) && !Skills.Contains(skill);
         }
+        #endregion
 
+        #region Remove Experience
+        private bool CanRemoveExpFromPreviousExperience(object arg)
+        {
+            int expId = (int)arg;
+
+            return expId >= 0 && expId < PreviousExperience.Count;
+        }
+        private void RemoveExpFromPreviousExperience(object obj)
+        {
+            int expId = (int)obj;
+
+            PreviousExperience.RemoveAt(expId);
+        }
+        #endregion
+
+        #region Add Experience
+        private void AddExpToPreviousExperience(object obj)
+        {
+            PreviousExperience.Add(new ExperienceViewModel(new Experience("Company", "Position", default, default, new string[] { "Responsobility0", "Responsobility1", "Responsobility2" })));
+        }
+        #endregion
+
+        #region Remove Responsobility
+        private bool CanRemoveResponsobilityToCerteinExperience(object arg)
+        {
+            var values = (object[])arg; 
+            if (values == null || values.Length<2 || values[1]== DependencyProperty.UnsetValue)
+                return false;
+            int expId = (int)values[0];
+            Console.WriteLine($"\n\n{(int)values[0]} - (int){values[1]}\n\n");
+            int respId = (int)values[1];
+
+            return expId >= 0 && respId >= 0 && expId < PreviousExperience.Count && respId < PreviousExperience[expId].Responsibilities.Count;
+        }
+        private void RemoveResponsobilityToCerteinExperience(object obj)
+        {
+            var values = (object[])obj;
+            int expId = (int)values[0];
+            int respId = (int)values[1];
+
+            PreviousExperience[expId].Responsibilities.RemoveAt(respId);
+        }
+        #endregion
+
+        #region Add Responsobility
+        private bool CanAddResponsobilityToCerteinExperience(object arg)
+        {
+            int expId = (int)arg;
+
+            return expId >= 0 && expId < PreviousExperience.Count;
+        }
+
+        private void AddResponsobilityToCerteinExperience(object obj)
+        {
+            int expId = (int)obj;
+
+            PreviousExperience.ElementAt(expId).Responsibilities.Add(new ResponsobilityViewModel("Responsobility"));
+        }
+        #endregion
 
     }
 
