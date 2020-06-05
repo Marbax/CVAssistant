@@ -1,5 +1,5 @@
 # CVAssistant
- App to make CV creation easier ***Morozov M.E.***
+ App to make CV creation easier(not sure) ***Morozov M.E.***
 
 <dev ><img src="gitAnim/rainbow.gif" width="100%" height="25" margin = "200" align="center">
 </dev>
