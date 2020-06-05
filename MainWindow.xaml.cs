@@ -1,47 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using ViewModels;
+﻿using System.Windows;
 
 namespace CVAssistant
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Main View
     /// </summary>
     public partial class MainWindow : Window
     {
-        ViewModels.MainViewModel _mvm = new ViewModels.MainViewModel();
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = _mvm;
+            DataContext = new ViewModels.MainViewModel();
+            DocViewer.IsScrollViewEnabled = false;
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            _mvm.CreateTestPDF(DocViewer.Document);
-        }
-
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            DocViewer.Document = _mvm.OpenPDF();
-        }
-
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            _mvm.SaveData();
-            _mvm.SaveLogs();
-        }
     }
 }

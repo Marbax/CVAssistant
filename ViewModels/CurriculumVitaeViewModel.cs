@@ -3,8 +3,6 @@ using Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -17,7 +15,7 @@ namespace ViewModels
         public CurriculumVitae CurriculumVitae
         {
             get => _curriculumVitae;
-            //set => SetProperty(ref _curriculumVitae, value);
+            private set => SetProperty(ref _curriculumVitae, value);
         }
 
         #region Commands
@@ -38,6 +36,7 @@ namespace ViewModels
 
         private readonly RelayCommand _removeResponsobility;
         public ICommand RemoveResponsobility => _removeResponsobility;
+
         #endregion
 
 
@@ -76,8 +75,6 @@ namespace ViewModels
             set { SetProperty(ref _preveousExpertience, value); }
         }
 
-
-
         public CurriculumVitaeViewModel(CurriculumVitae curriculumVitae)
         {
             _curriculumVitae = curriculumVitae;
@@ -85,16 +82,20 @@ namespace ViewModels
             _curriculumVitae.Skills.ToList().ForEach(i => Skills.Add(new SkillViewModel(i)));
             _curriculumVitae.PreviousExperience.ToList().ForEach(i => PreviousExperience.Add(new ExperienceViewModel(i)));
 
-
+            #region Commands Init
             _addSkill = new RelayCommand(AddSkillToSkills, CanAddSkillToSkills);
             _removeSkill = new RelayCommand(RemoveSkillFromSkills, CanRemoveSkillFromSkills);
             _addExperience = new RelayCommand(AddExpToPreviousExperience);
             _removeExperience = new RelayCommand(RemoveExpFromPreviousExperience, CanRemoveExpFromPreviousExperience);
             _addResponsobility = new RelayCommand(AddResponsobilityToCerteinExperience, CanAddResponsobilityToCerteinExperience);
-            _removeResponsobility = new RelayCommand(RemoveResponsobilityToCerteinExperience, CanRemoveResponsobilityToCerteinExperience);
+            _removeResponsobility = new RelayCommand(RemoveResponsobilityFromCerteinExperience, CanRemoveResponsobilityToCerteinExperience);
+            #endregion
+
         }
 
-
+        /// <summary>
+        /// Temporary methods for update collections ('coz have problems with ObservableCollections)
+        /// </summary>
         public void UpdateSource()
         {
             List<string> tmpSkills = new List<string>();
@@ -173,7 +174,7 @@ namespace ViewModels
 
             return expId >= 0 && respId >= 0 && expId < PreviousExperience.Count && respId < PreviousExperience[expId].Responsibilities.Count;
         }
-        private void RemoveResponsobilityToCerteinExperience(object obj)
+        private void RemoveResponsobilityFromCerteinExperience(object obj)
         {
             var values = (object[])obj;
             int expId = (int)values[0];
@@ -198,7 +199,6 @@ namespace ViewModels
             PreviousExperience.ElementAt(expId).Responsibilities.Add(new ResponsobilityViewModel("Responsobility"));
         }
         #endregion
-
 
     }
 

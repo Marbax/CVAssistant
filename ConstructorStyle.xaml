@@ -114,6 +114,7 @@
             <Setter Property="FontSize" Value="14" />
             <Setter Property="Template" Value="{StaticResource TextBoxTemplate}"/>
             <Setter Property="Margin" Value="2" />
+            <Setter Property="MinWidth" Value="100" />
         </Style.Setters>
         <Style.Triggers>
             <EventTrigger RoutedEvent="GotFocus">

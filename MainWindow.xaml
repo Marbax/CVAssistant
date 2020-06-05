@@ -3,13 +3,25 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:Interactivity="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:Views="clr-namespace:CVAssistant"
         mc:Ignorable="d"
         Background="#FF333333"
         Title="CVAssistant" 
         WindowStartupLocation="CenterScreen"
-        Closing="Window_Closing"
         >
+    <Window.InputBindings>
+        <KeyBinding Command="{Binding Path=CreateNewCV}" Key="T" Modifiers="Ctrl"/>
+    </Window.InputBindings>
+
+    <Interactivity:Interaction.Triggers>
+        <Interactivity:EventTrigger EventName="Loaded">
+            <Interactivity:InvokeCommandAction Command="{Binding ViewLoaded}"/>
+        </Interactivity:EventTrigger>
+        <Interactivity:EventTrigger EventName="Closing">
+            <Interactivity:InvokeCommandAction Command="{Binding ViewClosing}"/>
+        </Interactivity:EventTrigger>
+    </Interactivity:Interaction.Triggers>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -20,23 +32,16 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"></ColumnDefinition>
             <ColumnDefinition Width="Auto"></ColumnDefinition>
-            <ColumnDefinition Width="1*"></ColumnDefinition>
+            <ColumnDefinition Width="0.8*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
         <Menu Grid.Row="0" Grid.Column="0">
-            <MenuItem Header="Test">
-                <MenuItem Header="Test">
-
-                </MenuItem>
-            </MenuItem>
-            <MenuItem Header="Test">
-
+            <MenuItem Header="_Document">
+                <MenuItem Header="_Create New" Command="{Binding Path=CreateNewCV}" InputGestureText="Ctrl+T"/>
             </MenuItem>
         </Menu>
 
-        <Views:ConstructorUserControl Grid.Column="0" Grid.Row="1" Grid.RowSpan="2">
-
-        </Views:ConstructorUserControl>
+        <Views:ConstructorUserControl Grid.Column="0" Grid.Row="1" Grid.RowSpan="2"/>
 
         <GridSplitter Grid.Column="1" 
                       Grid.Row="0" 
@@ -46,20 +51,11 @@
                       VerticalAlignment="Stretch">
         </GridSplitter>
 
-        <FlowDocumentReader x:Name="DocViewer" Grid.Row="1" Grid.Column="2">
-            <FlowDocument>
-                <FlowDocument.Resources>
-                    <Style TargetType="TextBlock">
-                        <Setter Property="FontSize" Value="14"/>
-                        <Setter Property="Margin" Value="5"/>
-                    </Style>
-                </FlowDocument.Resources>
-            </FlowDocument>
-        </FlowDocumentReader>
+        <FlowDocumentReader x:Name="DocViewer" Grid.Row="1" Grid.Column="2"/>
 
         <StackPanel Grid.Row="2" Grid.Column="2" Orientation="Horizontal">
-            <Button Click="Button_Click" Margin="3">Gen</Button>
-            <Button Click="Button_Click_1" Margin="3">Show</Button>
+            <Button Content="Save to PDF" Command="{Binding Path=SaveToPDF}" CommandParameter="{Binding ElementName=DocViewer}"/>
+            <Button Content="Preview" Command="{Binding Path=GetCvPreview}" CommandParameter="{Binding ElementName=DocViewer}"/>
         </StackPanel>
 
     </Grid>

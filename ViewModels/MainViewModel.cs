@@ -1,10 +1,12 @@
-﻿using Models;
+﻿using Commands;
+using Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Windows.Documents;
+using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace ViewModels
 {
@@ -17,8 +19,6 @@ namespace ViewModels
             set { _logs = value; }
         }
 
-        readonly PDFAssistant.PDFAssistant _PDFAssistant = new PDFAssistant.PDFAssistant();
-
         private CurriculumVitaeViewModel _currentCV;
         public CurriculumVitaeViewModel CurrentCV
         {
@@ -26,30 +26,63 @@ namespace ViewModels
             set { SetProperty(ref _currentCV, value); }
         }
 
+        private string _templatePath = @".\Templates\DefaultCV.lqd";
+        public string CurrentTemplatePath
+        {
+            get { return _templatePath; }
+            set { SetProperty(ref _templatePath, value); }
+        }
+
+        private string _documentSavePath = "MyCV.pdf";
+        public string CurrentDocumentSavePath
+        {
+            get { return _documentSavePath; }
+            set { SetProperty(ref _documentSavePath, value); }
+        }
+
+        #region Commands
+        private readonly RelayCommand _createNewCV;
+        public ICommand CreateNewCV => _createNewCV;
+
+        private readonly RelayCommand _getCvPreview;
+        public ICommand GetCvPreview => _getCvPreview;
+
+        private readonly RelayCommand _saveToPDF;
+        public ICommand SaveToPDF => _saveToPDF;
+
+        private readonly RelayCommand _viewLoaded;
+        public ICommand ViewLoaded => _viewLoaded;
+
+        private readonly RelayCommand _viewClosing;
+        public ICommand ViewClosing => _viewClosing;
+        #endregion
 
         public MainViewModel()
         {
-            if (LoadLogs() == false)
-            {
-                Logs = new ObservableCollection<Log>();
-            }
-
-            if (LoadData() == false)
-            {
-                CurrentCV = GetDefaultCV();
-            }
+            #region Commands Init
+            _createNewCV = new RelayCommand(CreateNewCVMethod);
+            _getCvPreview = new RelayCommand(GenerateDocument);
+            _saveToPDF = new RelayCommand(SaveDocumentToPDF, CanSaveDocumentToPDF);
+            _viewLoaded = new RelayCommand(TryLoadSerializaideddData);
+            _viewClosing = new RelayCommand(TrySerializeData);
+            #endregion
         }
 
-
-        public void CreateTestPDF(FlowDocument flowDocument, string saveToPath = "doc.pdf")
+        private bool CanSaveDocumentToPDF(object arg)
         {
-            _PDFAssistant.GenPDFFromFlowDocument(flowDocument, saveToPath);
+            var doc = (arg as FlowDocumentReader).Document;
+            return doc != null && doc.ContentStart != doc.ContentEnd;
         }
 
-        public FlowDocument OpenPDF()
+        private void SaveDocumentToPDF(object obj)
+        {
+            PDFAssistant.PDFAssistant.GenPDFFromFlowDocument((obj as FlowDocumentReader).Document, CurrentDocumentSavePath);
+        }
+
+        private void GenerateDocument(object obj)
         {
             CurrentCV.UpdateSource();
-            return _PDFAssistant.Parse(@"Templates\DefaultCV.lqd", CurrentCV.CurriculumVitae);
+            (obj as FlowDocumentReader).Document = PDFAssistant.PDFAssistant.Parse(CurrentTemplatePath, CurrentCV.CurriculumVitae);
         }
 
         private CurriculumVitaeViewModel GetDefaultCV()
@@ -75,9 +108,17 @@ namespace ViewModels
             return curriculumVitae;
         }
 
+        private void CreateNewCVMethod(object obj = null)
+        {
+            CurrentCV = new CurriculumVitaeViewModel(new CurriculumVitae(
+                new Person("", "", "", default, "", "", @"./Templates/DefaultUserIMG.png"),
+                new string[] { "" },
+                new Experience[] { new Experience("", "", default, default, new string[] { "" }) }));
+            Console.WriteLine("\n\nCreated\n\n");
+        }
 
         #region Serialization
-        readonly BinaryFormatter _bf = new BinaryFormatter();
+        private readonly BinaryFormatter _bf = new BinaryFormatter();
 
         private string _dataPath = "LastCV.dat";
         public string DataPath
@@ -86,6 +127,27 @@ namespace ViewModels
             set { SetProperty(ref _dataPath, value); }
         }
 
+        private string _logsPath = "logs.dat";
+        public string LogsPath
+        {
+            get { return _logsPath; }
+            set { SetProperty(ref _logsPath, value); }
+        }
+
+
+        private void TryLoadSerializaideddData(object obj = null)
+        {
+            LoadLogs();
+
+            if (LoadData() == false)
+                CurrentCV = GetDefaultCV();
+        }
+        private void TrySerializeData(object obj = null)
+        {
+            CurrentCV.UpdateSource();
+            SaveData();
+            SaveLogs();
+        }
 
         private bool LoadData()
         {
@@ -99,7 +161,6 @@ namespace ViewModels
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"\nSerealization ex :\n{ex.Message}\n");
                 Logs.Add(new Log($"Deserealization ex :\n{ex.Message}\n", DateTime.Now));
                 return false;
             }
@@ -118,7 +179,6 @@ namespace ViewModels
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"\nSerealization ex :\n{ex.Message}\n");
                 Logs.Add(new Log($"Serealization ex :\n{ex.Message}\n", DateTime.Now));
                 return false;
             }
@@ -129,14 +189,15 @@ namespace ViewModels
         {
             try
             {
-                using (FileStream fs = new FileStream("logs.dat", FileMode.Open))
+                using (FileStream fs = new FileStream(LogsPath, FileMode.Open))
                 {
                     Logs = (ObservableCollection<Log>)_bf.Deserialize(fs);
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"\nSerealization ex :\n{ex.Message}\n");
+                Logs = new ObservableCollection<Log>();
+                Logs.Add(new Log($"Logs Serialization ex:\n{ex.Message}\n", DateTime.Now));
                 return false;
             }
             return true;
@@ -145,21 +206,19 @@ namespace ViewModels
         {
             try
             {
-                using (FileStream fs = new FileStream("logs.dat", FileMode.Create))
+                using (FileStream fs = new FileStream(LogsPath, FileMode.Create))
                 {
                     _bf.Serialize(fs, Logs);
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine($"\nSerealization ex :\n{ex.Message}\n");
                 return false;
             }
 
             return true;
         }
         #endregion
-
 
     }
 
